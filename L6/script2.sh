@@ -40,7 +40,7 @@ done
 
 (( ${#FILES[@]} == 0 )) && echo "No files specified." && exit 2
 [[ -z $DIR ]] && echo "No directory specified." && exit 3
-[[ ! -d $DIR ]] && echo "Directory doesn't exist." && exit 4
+[[ ! -d $DIR ]] && mkdir $DIR
 #(( ${#ARGS[@]} != 0 )) && echo "No arguments allowed right now" && exit 5
 for FILE in ${FILES[@]} ; do
 	FULLNAME="${DIR}/${FILE}"
@@ -51,7 +51,7 @@ for FILE in ${FILES[@]} ; do
 			echo "File $FILE already exists in $DIR"
 		else
 			touch "$FULLNAME"
-			[[  $FILE == *".sh"* ]] && chmod +x "$FULLNAME" 
+			[[  $FILE == *".sh" ]] && chmod +x "$FULLNAME" 
 		fi	
 	fi
 done

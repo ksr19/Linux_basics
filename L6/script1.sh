@@ -19,24 +19,18 @@ while [[ $# -gt 0 ]] ; do
 		     usage
 		     exit 0
 		;;
-		-*|--*)
-		     ARGS+=($1)
+		-w|--write)
+		     WRITE=TRUE
 		     shift
 		;;
 	esac
 done
 
 (( ${#FILES[@]} == 0 )) && echo "Files not specified" && exit 1
-(( ${#ARGS[@]} == 0 )) && sed -e 's/\w/\u&/g; /^$/d' ${FILES[@]} && exit 0
-for ARG in ${ARGS[@]} ; do
-	if [[ $ARG == '-w' || $ARG == '--write' ]] ; then
-		sed -ie 's/\w/\u&/g; /^$/d' ${FILES[@]}
-		echo "Files were modified"
-		for FILE in ${FILES[@]} ; do
-			rm -f $(find -name "${FILE}e")
-		done
-	else
-		echo "No option $ARG. Check $0 --help for additional info." 
-	fi
-done
+if [[ -n $WRITE ]] ; then
+    sed -ie 's/\w/\u&/g; /^$/d' ${FILES[@]}
+    echo "Files were modified"
+else
+    sed -e 's/\w/\u&/g; /^$/d' ${FILES[@]}
+fi
 exit 0
